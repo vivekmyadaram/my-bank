@@ -14,7 +14,33 @@ import { Link } from "react-router-dom";
 
 import SavingsIcon from "@mui/icons-material/Savings";
 
-const sideNavMenu = [
+const cusomerMenu = [
+  {
+    id: 1,
+    title: "Profile View",
+    path: "/profile-view",
+    icon: <PersonAddIcon />,
+  },
+  {
+    id: 1,
+    title: "Apply Loan",
+    path: "/apply-loan",
+    icon: <PersonAddIcon />,
+  },
+  {
+    id: 1,
+    title: "Deposit Menu",
+    path: "/deposit",
+    icon: <PersonAddIcon />,
+  },
+  {
+    id: 1,
+    title: "Request Account Update",
+    path: "/request-update",
+    icon: <PersonAddIcon />,
+  },
+];
+const AdminMenu = [
   {
     id: 1,
     title: "New Customer",
@@ -35,13 +61,20 @@ const sideNavMenu = [
   },
   {
     id: 4,
-    title: "Deposit",
+    title: "Deposits",
+    path: "/deposit",
+    icon: <SavingsIcon />,
+  },
+  {
+    id: 4,
+    title: "Requests",
     path: "/deposit",
     icon: <SavingsIcon />,
   },
 ];
 
 export default function SideNav() {
+  const [role, setRole] = React.useState("user");
   return (
     <Box
       sx={{
@@ -53,26 +86,49 @@ export default function SideNav() {
       }}
     >
       <nav aria-label="main mailbox folders">
-        <List>
-          {sideNavMenu.map((menu) => (
-            <Link
-              key={menu?.id}
-              to={menu?.path}
-              style={{ textDecoration: "none", color: "initial" }}
-            >
-              <ListItem disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>{menu?.icon}</ListItemIcon>
-                  <ListItemText
-                    primary={
-                      <Typography variant="body2">{menu?.title}</Typography>
-                    }
-                  />
-                </ListItemButton>
-              </ListItem>
-            </Link>
-          ))}
-        </List>
+        {role === "user" ? (
+          <List>
+            {cusomerMenu.map((menu) => (
+              <Link
+                key={menu?.id}
+                to={menu?.path}
+                style={{ textDecoration: "none", color: "initial" }}
+              >
+                <ListItem disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>{menu?.icon}</ListItemIcon>
+                    <ListItemText
+                      primary={
+                        <Typography variant="body2">{menu?.title}</Typography>
+                      }
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
+            ))}
+          </List>
+        ) : (
+          <List>
+            {AdminMenu.map((menu) => (
+              <Link
+                key={menu?.id}
+                to={menu?.path}
+                style={{ textDecoration: "none", color: "initial" }}
+              >
+                <ListItem disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>{menu?.icon}</ListItemIcon>
+                    <ListItemText
+                      primary={
+                        <Typography variant="body2">{menu?.title}</Typography>
+                      }
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
+            ))}
+          </List>
+        )}
       </nav>
       <Divider />
     </Box>

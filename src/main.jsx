@@ -14,6 +14,7 @@ import Header from "./Pages/header";
 import AccountLoginPage from "./Pages/loginPage";
 import { store } from "./Store/store";
 import App123 from "./try";
+import App from "./experiments/1";
 
 const router = createBrowserRouter([
   {
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
   {
     path: "/try",
     element: <App123 />,
+  },
+  {
+    path: "/hello",
+    element: <App />,
   },
 ]);
 

@@ -9,6 +9,7 @@ import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { Stack } from "@mui/material";
 
 const options = ["Option 1", "Option 2", "Option 3"];
 
@@ -57,7 +58,7 @@ const App = () => {
       </AppBar>
       {isMobile && (
         <Drawer
-          anchor="left"
+          anchor="right"
           open={drawerOpen}
           onClose={handleDrawerToggle(false)}
         >
@@ -72,12 +73,17 @@ const App = () => {
               </ListItem>
             ))}
           </List>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Typography variant="h6">Your Bank Name</Typography>
+            <Typography variant="h6">List</Typography>
+          </Stack>
         </Drawer>
       )}
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={3} md={2}>
-          {/* This space intentionally left blank for mobile */}
-        </Grid>
         <Grid item xs={12} sm={9} md={10}>
           <div style={{ padding: 20 }}>
             <div style={{ display: "none" }}>{rightSidebarContent}</div>
