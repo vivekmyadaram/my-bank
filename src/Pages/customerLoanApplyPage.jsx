@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
 
 const steps = ["Personal Info", "Loan Info", "Review"];
 
@@ -27,6 +26,43 @@ const personalFields = [
   { name: "fatherName", label: "Father Name" },
   { name: "fatherOccupation", label: "Father Occupation" },
 ];
+
+// const personalFieldsSchema = Yup.object().shape({
+//   firstName: Yup.string().required("First Name is required"),
+//   lastName: Yup.string().required("Last Name is required"),
+//   address: Yup.string().required("Address is required"),
+//   city: Yup.string().required("City is required"),
+//   state: Yup.string().required("State is required"),
+//   country: Yup.string().required("Country is required"),
+//   zip: Yup.string().required("Zip Code is required"),
+//   fatherName: Yup.string().required("Father's Name is required"),
+//   fatherOccupation: Yup.string().required("Father's Occupation is required"),
+// });
+
+// const loanFieldsSchema = Yup.object().shape({
+//   loanType: Yup.string().required("Loan Type is required"),
+//   loanAmount: Yup.number()
+//     .required("Loan Amount is required")
+//     .positive("Loan Amount must be a positive number"),
+//   loanApplyDate: Yup.date().required("Apply Date is required"),
+//   rateOfInterest: Yup.number()
+//     .required("Rate of Interest is required")
+//     .positive("Rate of Interest must be a positive number"),
+//   loanDuration: Yup.string().required("Loan Duration is required"),
+//   annualIncome: Yup.number()
+//     .required("Annual Income is required")
+//     .positive("Annual Income must be a positive number"),
+//   course: Yup.string().required("Course Name is required"),
+//   courseFee: Yup.number()
+//     .required("Course Fee is required")
+//     .positive("Course Fee must be a positive number"),
+//   companyName: Yup.string().required("Company Name is required"),
+//   designation: Yup.string().required("Designation is required"),
+//   experience: Yup.string().required("Experience is required"),
+//   totalExperience: Yup.string().required("Total Experience is required"),
+// });
+
+// const schema = { ...personalFieldsSchema, loanFieldsSchema };
 
 const loanFields = [
   { name: "loanType", label: "Loan Type", type: "select" },
@@ -47,10 +83,8 @@ const reviewFields = {
   conditions: false,
 };
 
-export default function LoanApply() {
-  const dispatch = useDispatch();
+export default function CustomerLoanApplication() {
   const [activeStep, setActiveStep] = useState(0);
-  const [loanInput, setLoanInput] = useState("");
   const {
     register,
     handleSubmit,
@@ -69,12 +103,7 @@ export default function LoanApply() {
   };
 
   const handleSubmitForm = (data) => {
-    // dispatch(applyLoan(loanInput));
     console.log(data);
-  };
-
-  const handleFieldChange = (e) => {
-    setLoanInput({ ...loanInput, [e.target.name]: e.target.value });
   };
 
   return (
@@ -103,11 +132,9 @@ export default function LoanApply() {
         ) : (
           <Box sx={{ p: 3 }}>
             {activeStep === 0 && (
-              <AddressForm register={register} errors={errors} />
+              <PersonalInfomation register={register} errors={errors} />
             )}
-            {activeStep === 1 && (
-              <PaymentForm register={register} errors={errors} />
-            )}
+            {activeStep === 1 && <LoanRe register={register} errors={errors} />}
             {activeStep === 2 && <Review watch={watch} />}
             <Stack direction="row" justifyContent="flex-end" spacing={2} mt={3}>
               {activeStep !== 0 && (
@@ -133,7 +160,7 @@ export default function LoanApply() {
   );
 }
 
-function AddressForm({ register, errors }) {
+function PersonalInfomation({ register, errors }) {
   return (
     <Paper elevation={9} sx={{ p: 2 }}>
       <Typography variant="h6" gutterBottom>
@@ -159,7 +186,7 @@ function AddressForm({ register, errors }) {
   );
 }
 
-function PaymentForm({ register, errors }) {
+function LoanRe({ register, errors }) {
   return (
     <Paper elevation={9} sx={{ p: 2 }}>
       <Typography variant="h6" gutterBottom>

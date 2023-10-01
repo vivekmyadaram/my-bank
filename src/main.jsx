@@ -5,59 +5,77 @@ import ReactDOM from "react-dom/client";
 import { Toaster } from "react-hot-toast";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import App from "./app";
 import LoanApply from "./Pages/applyLoan";
 import BankCustomers from "./Pages/customers";
 import CustomerRegistration from "./Pages/customers/customerRegistration";
 import UpdateCustomerAccount from "./Pages/customers/update-customer";
 import AmountDeposit from "./Pages/deposits/customerDeposti";
-import Header from "./Pages/header";
 import AccountLoginPage from "./Pages/loginPage";
 import { store } from "./Store/store";
-import App123 from "./try";
-import App from "./experiments/1";
+import LoanApply1 from "./try";
+import ProtectedRoute from "./Pages/protected-route";
+import RequestForAccountUpdate from "./Pages/request-update-page";
+import CustomerProfileDisplay from "./Pages/profile-customer-view";
+import CustomerLoanApplication from "./Pages/customerLoanApplyPage";
+import AmountWithdrawal from "./Pages/customerAmountWithdrawal";
+import WelcomeComponent from "./components/welcomeUser";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Header />,
+    element: <App />,
     children: [
       {
         path: "/",
-        element: <BankCustomers />,
+        element: <ProtectedRoute element={WelcomeComponent} />,
       },
       {
         path: "/customers",
-        element: <BankCustomers />,
+        element: <ProtectedRoute element={BankCustomers} />,
       },
       {
         path: "/apply-loan",
-        element: <LoanApply />,
+        element: <ProtectedRoute element={CustomerLoanApplication} />,
       },
       {
         path: "/edit-user",
-        element: <UpdateCustomerAccount />,
+        element: <ProtectedRoute element={UpdateCustomerAccount} />,
+      },
+      {
+        path: "/request-update",
+        element: <ProtectedRoute element={RequestForAccountUpdate} />,
       },
       {
         path: "/deposit",
-        element: <AmountDeposit />,
+        element: <ProtectedRoute element={AmountDeposit} />,
+        AmountWithdrawal,
+      },
+      {
+        path: "/withdrawal",
+        element: <ProtectedRoute element={AmountWithdrawal} />,
       },
       {
         path: "/register",
-        element: <CustomerRegistration />,
+        element: <ProtectedRoute element={CustomerRegistration} />,
+      },
+      {
+        path: "/cust-profile",
+        element: <ProtectedRoute element={CustomerProfileDisplay} />,
+      },
+      {
+        path: "/try",
+        element: <CustomerLoanApplication />,
       },
     ],
   },
   {
+    path: "/customer-register",
+    element: <CustomerRegistration />,
+  },
+  {
     path: "/log-in",
     element: <AccountLoginPage />,
-  },
-  {
-    path: "/try",
-    element: <App123 />,
-  },
-  {
-    path: "/hello",
-    element: <App />,
   },
 ]);
 

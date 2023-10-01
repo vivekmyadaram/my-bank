@@ -1,26 +1,38 @@
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import {
-  Radio,
-  RadioGroup,
+  Button,
   FormControlLabel,
   Grid,
   Paper,
+  Radio,
+  RadioGroup,
+  Stack,
   TextField,
-  Button,
   Typography,
 } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Login = () => {
-  const [role, setRole] = useState("user"); // Default role is set to 'user'
+  const [role, setRole] = useState("user");
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const handleRoleChange = (event) => {
-    setRole(event.target.value);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const onSubmit = (data) => {
     // Handle login logic based on the selected role (user or admin)
-    console.log(`Logging in as ${role}`);
+    console.log("Logging in as:", data);
+    console.log(role, "role");
+    if (data.username === "vivek" && data.password === "vivek19") {
+      toast.success("logged in succussfully");
+      navigate("/customers");
+    } else {
+      toast.error("username and password incorrect");
+    }
   };
 
   return (
@@ -31,25 +43,12 @@ const Login = () => {
             <Typography variant="h5" gutterBottom>
               {role === "user" ? "User Login" : "Admin Login"}
             </Typography>
-            <form onSubmit={handleSubmit}>
-              <TextField
-                label="Username"
-                variant="outlined"
-                fullWidth
-                margin="normal"
-              />
-              <TextField
-                label="Password"
-                variant="outlined"
-                fullWidth
-                margin="normal"
-                type="password"
-              />
+            <form onSubmit={handleSubmit(onSubmit)}>
               <RadioGroup
                 aria-label="role"
                 name="role"
                 value={role}
-                onChange={handleRoleChange}
+                onChange={(e) => setRole(e.target.value)}
                 row
                 style={{ justifyContent: "center" }}
               >
@@ -64,6 +63,25 @@ const Login = () => {
                   label="Admin"
                 />
               </RadioGroup>
+              <TextField
+                label="Username"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                {...register("username", { required: "Username is required" })}
+                error={!!errors.username}
+                helperText={errors.username?.message}
+              />
+              <TextField
+                label="Password"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                type="password"
+                {...register("password", { required: "Password is required" })}
+                error={!!errors.password}
+                helperText={errors.password?.message}
+              />
               <Button
                 type="submit"
                 variant="contained"
@@ -73,6 +91,30 @@ const Login = () => {
                 Login
               </Button>
             </form>
+            <Stack direction="row" justifyContent="flex-end" spacing={2} m={2}>
+              <Link
+                to="/forgot-password"
+                style={{
+                  textDecoration: "none",
+                  color: "#007bff",
+                  cursor: "pointer",
+                }}
+              >
+                <Typography variant="inherit">Forgot password</Typography>
+              </Link>
+              <Link
+                to={`/create-${role}`}
+                style={{
+                  textDecoration: "none",
+                  color: "#007bff",
+                  cursor: "pointer",
+                }}
+              >
+                <Typography variant="inherit">
+                  New {role === "user" ? "User" : "Admin"}? Create Account
+                </Typography>
+              </Link>
+            </Stack>
           </Paper>
         </Grid>
       </Grid>

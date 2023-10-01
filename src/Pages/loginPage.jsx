@@ -1,9 +1,9 @@
 import { Grid, Paper } from "@mui/material";
 import React from "react";
-import image from "../../public/bank.jpeg";
+import image from "/bank.jpeg";
 import Login from "../components/login";
 
-const AccountLoginPage = () => {
+function AccountLoginPage() {
   return (
     <div style={{ flexGrow: 1, padding: "16px" }}>
       <Grid container spacing={2} sx={{ minHeight: 550 }}>
@@ -30,6 +30,6 @@ const AccountLoginPage = () => {
       </Grid>
     </div>
   );
-};
+}
 
 export default AccountLoginPage;
