@@ -8,9 +8,10 @@ import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function MenuAppBar() {
+  const [role] = React.useState("user");
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -19,7 +20,11 @@ export default function MenuAppBar() {
   };
 
   const handleClose = () => {
-    navigate("/cust-profile");
+    if (role == "user") {
+      navigate("customer-profile");
+    } else {
+      navigate("/admin-profile");
+    }
     setAnchorEl(null);
   };
 
@@ -34,7 +39,15 @@ export default function MenuAppBar() {
             aria-label="menu"
             sx={{ mr: 2 }}
           >
-            <AccountBalanceIcon />
+            <Link
+              to="/"
+              style={{
+                textDecoration: "none",
+                color: "white",
+              }}
+            >
+              <AccountBalanceIcon />
+            </Link>
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             MyBank
@@ -67,6 +80,7 @@ export default function MenuAppBar() {
                 onClose={handleClose}
               >
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
+                <MenuItem>Special for you</MenuItem>
               </Menu>
             </div>
           }

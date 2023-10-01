@@ -43,7 +43,7 @@ const cusomerMenu = [
 const AdminMenu = [
   {
     id: 1,
-    title: "New Customer",
+    title: "Add Customer",
     path: "/register",
     icon: <PersonAddIcon />,
   },
@@ -55,26 +55,32 @@ const AdminMenu = [
   },
   {
     id: 3,
-    title: "All Customers",
+    title: "Customers",
     path: "/customers",
     icon: <GroupIcon />,
   },
   {
     id: 4,
     title: "Deposits",
-    path: "/deposit",
+    path: "/admin-deposits",
+    icon: <SavingsIcon />,
+  },
+  {
+    id: 4,
+    title: "Withdrawals",
+    path: "/admin-withdrawals",
     icon: <SavingsIcon />,
   },
   {
     id: 4,
     title: "Requests",
-    path: "/deposit",
+    path: "/admin-requests",
     icon: <SavingsIcon />,
   },
 ];
 
 export default function SideNav() {
-  const [role, setRole] = React.useState("user");
+  const [role, setRole] = React.useState("");
   return (
     <Box
       sx={{
