@@ -6,18 +6,22 @@ import { Toaster } from "react-hot-toast";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./app";
+import ProtectedRoute from "./components/protectedRoutePage";
 import WelcomeComponent from "./components/welcomeUser";
-import AmountWithdrawal from "./Pages1/amountWithdrawalPage";
-import CustomerRegistration from "./Pages1/adminRegistrationPage";
-import AmountDeposit from "./Pages1/amountDepositPage";
+import AdminProfileDisplay from "./Pages/adminProfileview";
+import AdminRegistration from "./Pages/adminRegistrationPage";
+import AmountDeposit from "./Pages/amountDepositPage";
+import AmountWithdrawal from "./Pages/amountWithdrawalPage";
+import BankCustomers from "./Pages/bankUsesPage";
+import CustomerProfileDisplay from "./Pages/customerProfileview";
+import CustomerRegistration from "./Pages/customerRegistrationPage";
+import CustomersRequestsPage from "./Pages/customerRequestsPage";
+import CustomerLoanApplication from "./Pages/loanApplicationPage";
 import AccountLoginPage from "./Pages/loginPage";
-import CustomerProfileDisplay from "./Pages/profile-customer-view";
-import ProtectedRoute from "./Pages/protected-route";
-import BankCustomers from "./Pages1/bankUsesPage";
-import CustomerLoanApplication from "./Pages1/loanApplicationPage";
-import UpdateCustomerAccount from "./Pages1/updateCustomerPage";
-import RequestForAccountUpdate from "./Pages1/updateRequestPage";
+import UpdateCustomerAccount from "./Pages/updateCustomerPage";
+import RequestForAccountUpdate from "./Pages/updateRequestPage";
 import { store } from "./Store/store";
+import RegistrationDoneShow from "./Pages/succussRegistrationPage";
 
 const router = createBrowserRouter([
   {
@@ -33,8 +37,12 @@ const router = createBrowserRouter([
         element: <ProtectedRoute element={CustomerProfileDisplay} />,
       },
       {
-        path: "/admin-profile",
+        path: "/customer-profile/:accountNumber",
         element: <ProtectedRoute element={CustomerProfileDisplay} />,
+      },
+      {
+        path: "/admin-profile",
+        element: <ProtectedRoute element={AdminProfileDisplay} />,
       },
       {
         path: "/customers",
@@ -45,7 +53,7 @@ const router = createBrowserRouter([
         element: <ProtectedRoute element={CustomerLoanApplication} />,
       },
       {
-        path: "/edit-user",
+        path: "/edit-user/:accountNumber",
         element: <ProtectedRoute element={UpdateCustomerAccount} />,
       },
       {
@@ -62,17 +70,25 @@ const router = createBrowserRouter([
       },
       {
         path: "/admin-register",
-        element: <ProtectedRoute element={CustomerRegistration} />,
+        element: <ProtectedRoute element={AdminRegistration} />,
       },
       {
         path: "/customer-register",
         element: <ProtectedRoute element={CustomerRegistration} />,
+      },
+      {
+        path: "/customer-requests",
+        element: <ProtectedRoute element={CustomersRequestsPage} />,
       },
     ],
   },
   {
     path: "/log-in",
     element: <AccountLoginPage />,
+  },
+  {
+    path: "/register-succuss",
+    element: <RegistrationDoneShow />,
   },
 ]);
 

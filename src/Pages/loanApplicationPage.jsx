@@ -9,10 +9,13 @@ import {
   Stepper,
   TextField,
   Typography,
+  Checkbox,
 } from "@mui/material";
+import axios from "axios";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const steps = ["Personal Info", "Loan Info", "Review"];
 
@@ -23,12 +26,52 @@ const personalFields = [
   { name: "city", label: "City" },
   { name: "state", label: "state" },
   { name: "country", label: "Country" },
-  { name: "zip", label: "Zip" },
+  { name: "pinCode", label: "Pin Code" },
   { name: "fatherName", label: "Father Name" },
   { name: "fatherOccupation", label: "Father Occupation" },
 ];
 
+// const personalFieldsSchema = Yup.object().shape({
+//   firstName: Yup.string().required("First Name is required"),
+//   lastName: Yup.string().required("Last Name is required"),
+//   address: Yup.string().required("Address is required"),
+//   city: Yup.string().required("City is required"),
+//   state: Yup.string().required("State is required"),
+//   country: Yup.string().required("Country is required"),
+//   zip: Yup.string().required("Zip Code is required"),
+//   fatherName: Yup.string().required("Father's Name is required"),
+//   fatherOccupation: Yup.string().required("Father's Occupation is required"),
+// });
+
+// const loanFieldsSchema = Yup.object().shape({
+//   loanType: Yup.string().required("Loan Type is required"),
+//   loanAmount: Yup.number()
+//     .required("Loan Amount is required")
+//     .positive("Loan Amount must be a positive number"),
+//   loanApplyDate: Yup.date().required("Apply Date is required"),
+//   rateOfInterest: Yup.number()
+//     .required("Rate of Interest is required")
+//     .positive("Rate of Interest must be a positive number"),
+//   loanDuration: Yup.string().required("Loan Duration is required"),
+//   annualIncome: Yup.number()
+//     .required("Annual Income is required")
+//     .positive("Annual Income must be a positive number"),
+//   course: Yup.string().required("Course Name is required"),
+//   courseFee: Yup.number()
+//     .required("Course Fee is required")
+//     .positive("Course Fee must be a positive number"),
+//   companyName: Yup.string().required("Company Name is required"),
+//   designation: Yup.string().required("Designation is required"),
+//   experience: Yup.string().required("Experience is required"),
+//   totalExperience: Yup.string().required("Total Experience is required"),
+// });
+
+// const schema = { ...personalFieldsSchema, loanFieldsSchema };
+
 const loanFields = [
+  { name: "accountNumber", label: "Account Number", type: "number" },
+  { name: "ifsc", label: "IFSC" },
+  { name: "branchName", label: "Branch Name" },
   { name: "loanType", label: "Loan Type", type: "select" },
   { name: "loanAmount", label: "Loan Amount", type: "number" },
   { name: "loanApplyDate", label: "Apply Date", type: "date" },
@@ -43,19 +86,16 @@ const loanFields = [
   { name: "totalExperience", label: "Total Experience" },
 ];
 
-const reviewFields = {
-  conditions: false,
-};
-
-export default function LoanApply() {
-  const dispatch = useDispatch();
+export default function CustomerLoanApplication() {
+  const navigate = useNavigate();
   const [activeStep, setActiveStep] = useState(0);
-  const [loanInput, setLoanInput] = useState("");
+  const [agree, setAgree] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
+    reset,
   } = useForm({
     // resolver: yupResolver(schema),
   });
@@ -68,13 +108,21 @@ export default function LoanApply() {
     setActiveStep(activeStep - 1);
   };
 
-  const handleSubmitForm = (data) => {
-    // dispatch(applyLoan(loanInput));
-    console.log(data);
-  };
-
-  const handleFieldChange = (e) => {
-    setLoanInput({ ...loanInput, [e.target.name]: e.target.value });
+  const handleSubmitForm = async (data) => {
+    if (agree) {
+      const apiUrl = "http://localhost:8080/apply-loan";
+      try {
+        const response = await axios.post(apiUrl, data);
+        console.log("Data sent successfully:", response?.data);
+        toast.success(response?.data?.message);
+        if (!response.ok) {
+          throw new Error("Post request failed");
+        }
+      } catch (error) {
+        console.error("Error sending data:", error);
+      }
+      reset();
+    }
   };
 
   return (
@@ -103,12 +151,14 @@ export default function LoanApply() {
         ) : (
           <Box sx={{ p: 3 }}>
             {activeStep === 0 && (
-              <AddressForm register={register} errors={errors} />
+              <PersonalInfomation register={register} errors={errors} />
             )}
             {activeStep === 1 && (
-              <PaymentForm register={register} errors={errors} />
+              <LoanInfo register={register} errors={errors} />
             )}
-            {activeStep === 2 && <Review watch={watch} />}
+            {activeStep === 2 && (
+              <Review watch={watch} agree={agree} setAgree={setAgree} />
+            )}
             <Stack direction="row" justifyContent="flex-end" spacing={2} mt={3}>
               {activeStep !== 0 && (
                 <Button variant="outlined" onClick={handleBack}>
@@ -133,7 +183,7 @@ export default function LoanApply() {
   );
 }
 
-function AddressForm({ register, errors }) {
+function PersonalInfomation({ register, errors }) {
   return (
     <Paper elevation={9} sx={{ p: 2 }}>
       <Typography variant="h6" gutterBottom>
@@ -159,11 +209,11 @@ function AddressForm({ register, errors }) {
   );
 }
 
-function PaymentForm({ register, errors }) {
+function LoanInfo({ register, errors }) {
   return (
     <Paper elevation={9} sx={{ p: 2 }}>
       <Typography variant="h6" gutterBottom>
-        Loan Info
+        Required info for loan process
       </Typography>
       <Grid container spacing={1}>
         {loanFields.map((field) => (
@@ -186,7 +236,7 @@ function PaymentForm({ register, errors }) {
   );
 }
 
-function Review({ watch }) {
+function Review({ watch, agree, setAgree }) {
   return (
     <Paper elevation={9} sx={{ p: 2 }}>
       <Typography variant="h6" gutterBottom>
@@ -231,6 +281,17 @@ function Review({ watch }) {
             ))}
           </Paper>
         </Grid>
+        <Stack direction="row" alignItems="center">
+          <Checkbox
+            checked={agree}
+            onChange={() => setAgree(!agree)}
+            inputProps={{ "aria-label": "controlled" }}
+            htmlFor="checked"
+          />
+          <Typography component="label" id="checked" name="checked">
+            Provided info correct & agreed terms and conditions
+          </Typography>
+        </Stack>
       </Grid>
     </Paper>
   );

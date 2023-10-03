@@ -14,11 +14,14 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import axios from "axios";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
+import { registrationSuccuss } from "../Store/accountHolderSlice";
+import { useNavigate } from "react-router-dom";
 
 const schema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -35,16 +38,16 @@ const schema = Yup.object().shape({
   proofDocNo: Yup.string().required("ProofDoc Num is required"),
 });
 
-function UpdateCustomerAccount() {
-  const { editedUser } = useSelector((state) => state.bankUsers);
-
+function CustomerRegistration() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const num19 = useSelector((state) => state.bankUsers);
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
   } = useForm({
-    defaultValues: editedUser,
     resolver: yupResolver(schema),
   });
 
@@ -62,7 +65,7 @@ function UpdateCustomerAccount() {
 
   const formFields = [
     { label: "Name", name: "name" },
-    { label: "Username", name: "username" },
+    { label: "User Name", name: "username" },
     {
       label: "Password",
       name: "password",
@@ -79,39 +82,36 @@ function UpdateCustomerAccount() {
     { label: "Address", name: "address" },
     { label: "State", name: "state" },
     { label: "Country", name: "country" },
-    { label: "Account Type", name: "accType" },
+    { label: "Account Type", name: "accountType" },
     { label: "InitialDeposit", name: "initialDeposit" },
-    { label: "Doc Proof", name: "proof" },
-    { label: "Doc Proof Number", name: "proofDocNo" },
+    { label: "Doc Proof", name: "documentProof" },
+    { label: "Doc Proof num19ber", name: "proofDocNo" },
   ];
 
   const onSubmitForm = async (data) => {
-    console.log(data);
+    const apiUrl = "http://localhost:8080/user-register";
     try {
-      const putResponse = await fetch(
-        `http://localhost:8080/customers/${editedUser._id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
-      toast.success("user updated succussfully");
-
-      if (!putResponse.ok) {
+      const response = await axios.post(apiUrl, data);
+      console.log("Data sent successfully:", response.data?.accountnum19ber);
+      dispatch(addCustomer(response?.data));
+      dispatch(registrationSuccuss(response?.data?.accountNumber));
+      toast.success("user created!");
+      navigate("/register-succuss");
+      if (!response.ok) {
         throw new Error("Post request failed");
       }
     } catch (error) {
-      toast.error(JSON.stringify(error));
-      console.log(error);
+      console.error("Error sending data:", error);
     }
     reset();
   };
 
   return (
-    <Paper sx={{ p: 2 }} component="form" onSubmit={handleSubmit(onSubmitForm)}>
+    <Paper
+      sx={{ p: 2, minHeight: "100%" }}
+      component="form"
+      onSubmit={handleSubmit(onSubmitForm)}
+    >
       <Stack direction="column" spacing={2}>
         <Stack
           direction="column"
@@ -123,7 +123,7 @@ function UpdateCustomerAccount() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Edit Account
+            Create Account
           </Typography>
         </Stack>
         <Grid container spacing={2}>
@@ -173,7 +173,7 @@ function UpdateCustomerAccount() {
         </Grid>
         <Box sx={{ textAlign: "right" }}>
           <Button type="submit" variant="contained">
-            Update
+            Create
           </Button>
         </Box>
       </Stack>
@@ -181,4 +181,4 @@ function UpdateCustomerAccount() {
   );
 }
 
-export default UpdateCustomerAccount;
+export default CustomerRegistration;

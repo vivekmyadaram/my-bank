@@ -14,10 +14,14 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { json, useParams } from "react-router-dom";
 import * as Yup from "yup";
+import { customerEdit } from "../Store/accountHolderSlice";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 const schema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -27,23 +31,24 @@ const schema = Yup.object().shape({
     .oneOf([Yup.ref("password"), null], "Passwords must match")
     .required("Confirm Password is required"),
   email: Yup.string().required("EmailID is required"),
-  phone: Yup.string()
-    // .matches(mobileNumberRegex, "Invalid Mobile Number")
-    .required("Phone number is required"),
-  phone: Yup.string().required("Name is required"),
+  phone: Yup.string().required("Phone number is required"),
   address: Yup.string().required("Address required"),
   state: Yup.string().required("State required"),
   country: Yup.string().required("Country is required"),
   proofDocNo: Yup.string().required("ProofDoc Num is required"),
 });
 
-function CustomerRegistration() {
+function UpdateCustomerAccount() {
+  const { accountNumber } = useParams();
+  const { editedUser } = useSelector((state) => state.bankUsers);
+  // const [update, setUpdate] = useState(editedUser);
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
   } = useForm({
+    defaultValues: editedUser,
     resolver: yupResolver(schema),
   });
 
@@ -84,34 +89,32 @@ function CustomerRegistration() {
     { label: "Doc Proof Number", name: "proofDocNo" },
   ];
 
-  const onSubmitForm = async (data) => {
-    console.log(data);
-    try {
-      const postResponse = await fetch("http://localhost:8080/customers", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      toast.success("user created succussfully");
+  // useEffect(() => {
+  //   reset({}); // Reset the form after component re-renders
+  // }, [update]); // Trigger useEffect whenever `editedUser` changes
 
-      if (!postResponse.ok) {
+  const onSubmitForm = async (data) => {
+    console.log(data?.accountNumber);
+    try {
+      const response = await axios.put(
+        `http://localhost:8080/user/${data?.accountNumber}`,
+        { data }
+      );
+      toast.success(
+        `User AccNo:${data?.accountNumber} details updated succussfully!`
+      );
+
+      if (!response.ok) {
         throw new Error("Post request failed");
       }
-      toast.success(JSON.stringify(resp));
     } catch (error) {
-      toast.error(JSON.stringify(error));
+      console.log(error);
     }
     reset();
   };
 
   return (
-    <Paper
-      sx={{ p: 2, minHeight: "100%" }}
-      component="form"
-      onSubmit={handleSubmit(onSubmitForm)}
-    >
+    <Paper sx={{ p: 2 }} component="form" onSubmit={handleSubmit(onSubmitForm)}>
       <Stack direction="column" spacing={2}>
         <Stack
           direction="column"
@@ -123,7 +126,7 @@ function CustomerRegistration() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Create Account
+            Edit Account
           </Typography>
         </Stack>
         <Grid container spacing={2}>
@@ -173,7 +176,7 @@ function CustomerRegistration() {
         </Grid>
         <Box sx={{ textAlign: "right" }}>
           <Button type="submit" variant="contained">
-            Create
+            Update
           </Button>
         </Box>
       </Stack>
@@ -181,4 +184,4 @@ function CustomerRegistration() {
   );
 }
 
-export default CustomerRegistration;
+export default UpdateCustomerAccount;

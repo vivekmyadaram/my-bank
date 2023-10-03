@@ -3,7 +3,7 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import React from "react";
 import MenuAppBar from "./components/appbar";
-import SideNav from "./components/side-nav";
+import SideNav from "./components/sideNavbar";
 import { Outlet } from "react-router-dom";
 import { Stack } from "@mui/material";
 

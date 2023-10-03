@@ -18,7 +18,7 @@ const formFields = [
   { label: "Doc Proof Number", name: "proofDocNo" },
 ];
 
-const CustomerProfileDisplay = () => {
+const AdminProfileDisplay = () => {
   return (
     <Paper
       elevation={3}
@@ -58,4 +58,4 @@ const CustomerProfileDisplay = () => {
   );
 };
 
-export default CustomerProfileDisplay;
+export default AdminProfileDisplay;

@@ -17,7 +17,6 @@ import {
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
 import * as Yup from "yup";
 
 const schema = Yup.object().shape({
@@ -35,16 +34,13 @@ const schema = Yup.object().shape({
   proofDocNo: Yup.string().required("ProofDoc Num is required"),
 });
 
-function UpdateCustomerAccount() {
-  const { editedUser } = useSelector((state) => state.bankUsers);
-
+function AdminRegistration() {
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
   } = useForm({
-    defaultValues: editedUser,
     resolver: yupResolver(schema),
   });
 
@@ -87,31 +83,32 @@ function UpdateCustomerAccount() {
 
   const onSubmitForm = async (data) => {
     console.log(data);
-    try {
-      const putResponse = await fetch(
-        `http://localhost:8080/customers/${editedUser._id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
-      toast.success("user updated succussfully");
+    // try {
+    //   const postResponse = await fetch("http://localhost:8080/customers", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(data),
+    //   });
+    //   toast.success("user created succussfully");
 
-      if (!putResponse.ok) {
-        throw new Error("Post request failed");
-      }
-    } catch (error) {
-      toast.error(JSON.stringify(error));
-      console.log(error);
-    }
-    reset();
+    //   if (!postResponse.ok) {
+    //     throw new Error("Post request failed");
+    //   }
+    //   toast.success(JSON.stringify(resp));
+    // } catch (error) {
+    //   toast.error(JSON.stringify(error));
+    // }
+    // reset();
   };
 
   return (
-    <Paper sx={{ p: 2 }} component="form" onSubmit={handleSubmit(onSubmitForm)}>
+    <Paper
+      sx={{ p: 2, minHeight: "100%" }}
+      component="form"
+      onSubmit={handleSubmit(onSubmitForm)}
+    >
       <Stack direction="column" spacing={2}>
         <Stack
           direction="column"
@@ -123,7 +120,7 @@ function UpdateCustomerAccount() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Edit Account
+            Create Account
           </Typography>
         </Stack>
         <Grid container spacing={2}>
@@ -173,7 +170,7 @@ function UpdateCustomerAccount() {
         </Grid>
         <Box sx={{ textAlign: "right" }}>
           <Button type="submit" variant="contained">
-            Update
+            Create
           </Button>
         </Box>
       </Stack>
@@ -181,4 +178,4 @@ function UpdateCustomerAccount() {
   );
 }
 
-export default UpdateCustomerAccount;
+export default AdminRegistration;
