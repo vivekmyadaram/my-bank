@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 const Login = () => {
   const [role, setRole] = useState("user");
@@ -23,15 +24,24 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    // Handle login logic based on the selected role (user or admin)
-    console.log("Logging in as:", data);
-    console.log(role, "role");
-    if (data.username === "vivek" && data.password === "vivek19") {
-      toast.success("logged in succussfully");
-      navigate("/customers");
-    } else {
-      toast.error("username and password incorrect");
+  const onSubmit = async (data) => {
+    try {
+      const { username, password } = data;
+      const response = await axios.post(`http://localhost:8080/login`, {
+        username,
+        password,
+      });
+      console.log(response, "vivek");
+      if (response?.data?.personExists) {
+        const token = response.data.token;
+        localStorage.setItem("token", token); // Store the token in local storage
+        navigate("/");
+        toast.success("User login Succussfully!");
+      } else {
+        toast.error("Wrong Credentials!");
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -103,7 +113,7 @@ const Login = () => {
                 <Typography variant="inherit">Forgot password</Typography>
               </Link>
               <Link
-                to={`/create-${role}`}
+                to={`/new-user`}
                 style={{
                   textDecoration: "none",
                   color: "#007bff",
@@ -111,7 +121,7 @@ const Login = () => {
                 }}
               >
                 <Typography variant="inherit">
-                  New {role === "user" ? "User" : "Admin"}? Create Account
+                  {role === "user" && "New User? Create Account"}
                 </Typography>
               </Link>
             </Stack>

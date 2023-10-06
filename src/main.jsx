@@ -22,8 +22,28 @@ import UpdateCustomerAccount from "./Pages/updateCustomerPage";
 import RequestForAccountUpdate from "./Pages/updateRequestPage";
 import { store } from "./Store/store";
 import RegistrationDoneShow from "./Pages/succussRegistrationPage";
+import RegistrationSuccess from "./components/loginSuccussPage";
+import TestPage from "../testPage";
+import ForgotPassword from "./components/forgetPasswordPage";
+import UserAccountRegistration from "./Pages/userAccountRegistrationPage";
 
 const router = createBrowserRouter([
+  {
+    path: "login",
+    element: <AccountLoginPage />,
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotPassword />,
+  },
+  {
+    path: "/new-user",
+    element: <UserAccountRegistration />,
+  },
+  {
+    path: "/register-succuss",
+    element: <RegistrationSuccess />,
+  },
   {
     path: "/",
     element: <App />,
@@ -33,11 +53,11 @@ const router = createBrowserRouter([
         element: <ProtectedRoute element={WelcomeComponent} />,
       },
       {
-        path: "/customer-profile",
+        path: "/user-profile",
         element: <ProtectedRoute element={CustomerProfileDisplay} />,
       },
       {
-        path: "/customer-profile/:accountNumber",
+        path: "/user-profile/:accountNumber",
         element: <ProtectedRoute element={CustomerProfileDisplay} />,
       },
       {
@@ -45,7 +65,7 @@ const router = createBrowserRouter([
         element: <ProtectedRoute element={AdminProfileDisplay} />,
       },
       {
-        path: "/customers",
+        path: "/users",
         element: <ProtectedRoute element={BankCustomers} />,
       },
       {
@@ -82,13 +102,10 @@ const router = createBrowserRouter([
       },
     ],
   },
+
   {
-    path: "/log-in",
-    element: <AccountLoginPage />,
-  },
-  {
-    path: "/register-succuss",
-    element: <RegistrationDoneShow />,
+    path: "/hello-world",
+    element: <TestPage />,
   },
 ]);
 

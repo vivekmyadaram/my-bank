@@ -31,17 +31,17 @@ const personalFields = [
   { name: "fatherOccupation", label: "Father Occupation" },
 ];
 
-// const personalFieldsSchema = Yup.object().shape({
-//   firstName: Yup.string().required("First Name is required"),
-//   lastName: Yup.string().required("Last Name is required"),
-//   address: Yup.string().required("Address is required"),
-//   city: Yup.string().required("City is required"),
-//   state: Yup.string().required("State is required"),
-//   country: Yup.string().required("Country is required"),
-//   zip: Yup.string().required("Zip Code is required"),
-//   fatherName: Yup.string().required("Father's Name is required"),
-//   fatherOccupation: Yup.string().required("Father's Occupation is required"),
-// });
+const personalFieldsSchema = Yup.object().shape({
+  firstName: Yup.string().required("First Name is required"),
+  lastName: Yup.string().required("Last Name is required"),
+  address: Yup.string().required("Address is required"),
+  city: Yup.string().required("City is required"),
+  state: Yup.string().required("State is required"),
+  country: Yup.string().required("Country is required"),
+  zip: Yup.string().required("Zip Code is required"),
+  fatherName: Yup.string().required("Father's Name is required"),
+  fatherOccupation: Yup.string().required("Father's Occupation is required"),
+});
 
 // const loanFieldsSchema = Yup.object().shape({
 //   loanType: Yup.string().required("Loan Type is required"),
@@ -97,7 +97,7 @@ export default function CustomerLoanApplication() {
     watch,
     reset,
   } = useForm({
-    // resolver: yupResolver(schema),
+    resolver: yupResolver(personalFieldsSchema),
   });
 
   const handleNext = () => {

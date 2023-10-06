@@ -20,7 +20,7 @@ import MoneyOffIcon from "@mui/icons-material/MoneyOff";
 import RequestPageIcon from "@mui/icons-material/RequestPage";
 
 export default function SideNav() {
-  const [role, setRole] = React.useState("use");
+  const [role, setRole] = React.useState("user");
 
   const cusomerMenu = [
     {
@@ -43,7 +43,7 @@ export default function SideNav() {
     },
     {
       id: 4,
-      title: "Request Account Update",
+      title: "Request for Account Update",
       path: "/request-update",
       icon: <PersonAddIcon />,
     },

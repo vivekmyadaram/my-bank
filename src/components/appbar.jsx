@@ -20,12 +20,17 @@ export default function MenuAppBar() {
   };
 
   const handleClose = () => {
-    if (role == "user") {
-      navigate("customer-profile");
-    } else {
-      navigate("/admin-profile");
-    }
     setAnchorEl(null);
+  };
+
+  const handleProfile = () => {
+    navigate("/user-profile");
+    handleClose();
+  };
+
+  const handleLogout = () => {
+    navigate("/login");
+    handleClose();
   };
 
   return (
@@ -79,8 +84,8 @@ export default function MenuAppBar() {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem>Special for you</MenuItem>
+                <MenuItem onClick={handleProfile}>Profile</MenuItem>
+                <MenuItem onClick={handleLogout}>Log Out</MenuItem>
               </Menu>
             </div>
           }
