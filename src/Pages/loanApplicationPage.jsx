@@ -17,6 +17,7 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 const steps = ["Personal Info", "Loan Info", "Review"];
 
