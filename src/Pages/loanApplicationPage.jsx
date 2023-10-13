@@ -16,6 +16,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import * as Yup from "yup";
 
 const steps = ["Personal Info", "Loan Info", "Review"];
 

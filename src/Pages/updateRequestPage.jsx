@@ -27,9 +27,6 @@ const schema = Yup.object().shape({
     .oneOf([Yup.ref("password"), null], "Passwords must match")
     .required("Confirm Password is required"),
   email: Yup.string().required("EmailID is required"),
-  phone: Yup.string()
-    // .matches(mobileNumberRegex, "Invalid Mobile Number")
-    .required("Phone number is required"),
   phone: Yup.string().required("Name is required"),
   address: Yup.string().required("Address required"),
   state: Yup.string().required("State required"),
@@ -44,7 +41,7 @@ function RequestForAccountUpdate() {
     formState: { errors },
     reset,
   } = useForm({
-    resolver: yupResolver(schema),
+    // resolver: yupResolver(schema),
   });
 
   const [visibility, setVisibility] = useState({
