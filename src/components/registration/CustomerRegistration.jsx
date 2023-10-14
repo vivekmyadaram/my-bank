@@ -9,19 +9,15 @@ import {
   Grid,
   IconButton,
   InputAdornment,
-  Paper,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
 import axios from "axios";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
-import { registrationSuccuss } from "../Store/accountHolderSlice";
-import { useNavigate } from "react-router-dom";
 
 const schema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -35,21 +31,19 @@ const schema = Yup.object().shape({
   address: Yup.string().required("Address required"),
   state: Yup.string().required("State required"),
   country: Yup.string().required("Country is required"),
+  documentProof: Yup.string().required("Document type is required"),
   proofDocNo: Yup.string().required("ProofDoc Num is required"),
+  dob: Yup.date().required("Date of birth is required"),
+  accountType: Yup.string().required("Account type is required"),
+  initialDeposit: Yup.string().required("Initial deposite is required"),
 });
 
 function CustomerRegistration() {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const num19 = useSelector((state) => state.bankUsers);
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
+  } = useForm({ resolver: yupResolver(schema) });
 
   const [visibility, setVisibility] = useState({
     password: false,
@@ -66,6 +60,16 @@ function CustomerRegistration() {
   const formFields = [
     { label: "Name", name: "name" },
     { label: "User Name", name: "username" },
+    { label: "Email", name: "email", type: "email" },
+    { label: "dob", name: "dob", type: "date" },
+    { label: "Mobile", name: "phone" },
+    { label: "Address", name: "address" },
+    { label: "State", name: "state" },
+    { label: "Country", name: "country" },
+    { label: "Account Type", name: "accountType" },
+    { label: "InitialDeposit", name: "initialDeposit" },
+    { label: "Doc Proof", name: "documentProof" },
+    { label: "Doc Proof number", name: "proofDocNo" },
     {
       label: "Password",
       name: "password",
@@ -76,42 +80,22 @@ function CustomerRegistration() {
       name: "confirmPassword",
       type: visibility.confirmPassword ? "text" : "password",
     },
-    { label: "Email", name: "email", type: "email" },
-    { label: "dob", name: "dob", type: "date" },
-    { label: "Mobile", name: "phone" },
-    { label: "Address", name: "address" },
-    { label: "State", name: "state" },
-    { label: "Country", name: "country" },
-    { label: "Account Type", name: "accountType" },
-    { label: "InitialDeposit", name: "initialDeposit" },
-    { label: "Doc Proof", name: "documentProof" },
-    { label: "Doc Proof num19ber", name: "proofDocNo" },
   ];
 
   const onSubmitForm = async (data) => {
     const apiUrl = "http://localhost:8080/user-register";
     try {
-      const response = await axios.post(apiUrl, data);
-      console.log("Data sent successfully:", response.data?.accountnum19ber);
-      dispatch(addCustomer(response?.data));
-      dispatch(registrationSuccuss(response?.data?.accountNumber));
-      toast.success("user created!");
-      navigate("/register-succuss");
-      if (!response.ok) {
-        throw new Error("Post request failed");
-      }
+      const res = await axios.post(apiUrl, data);
+      toast.success("Account created successfully");
+      localStorage.setItem("access_token", res.data.token);
+      window.location.href = "/register-succuss";
     } catch (error) {
-      console.error("Error sending data:", error);
+      toast.error("Something went wrong");
     }
-    reset();
   };
 
   return (
-    <Paper
-      sx={{ p: 2, minHeight: "100%" }}
-      component="form"
-      onSubmit={handleSubmit(onSubmitForm)}
-    >
+    <form onSubmit={handleSubmit(onSubmitForm)}>
       <Stack direction="column" spacing={2}>
         <Stack
           direction="column"
@@ -126,23 +110,13 @@ function CustomerRegistration() {
             Create Account
           </Typography>
         </Stack>
-        <Grid container spacing={2}>
+        <Grid container>
           {formFields.map((field, index) => (
-            <Grid
-              item
-              xs={12}
-              sm={
-                field?.name === "proofDocNo"
-                  ? 6
-                  : field?.name === "proof"
-                  ? 6
-                  : 3
-              }
-              key={index}
-            >
+            <Grid item xs={12} sm={6} key={index} style={{ padding: 10 }}>
               <TextField
                 fullWidth
                 size="small"
+                InputLabelProps={{ shrink: true }}
                 type={field.type || "text"}
                 label={field.name === "proof" ? "" : field.label}
                 {...register(field.name)}
@@ -173,11 +147,11 @@ function CustomerRegistration() {
         </Grid>
         <Box sx={{ textAlign: "right" }}>
           <Button type="submit" variant="contained">
-            Create
+            Submit
           </Button>
         </Box>
       </Stack>
-    </Paper>
+    </form>
   );
 }
 

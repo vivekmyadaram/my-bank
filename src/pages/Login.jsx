@@ -1,14 +1,12 @@
 import { Grid, Paper } from "@mui/material";
-import React from "react";
-import CustomerRegistration from "./customerRegistrationPage";
 import image from "/bank.jpeg";
+import Login from "../components/login";
 
-function UserAccountRegistration() {
+function AccountLoginPage() {
   return (
     <div style={{ flexGrow: 1, padding: "16px" }}>
       <Grid container spacing={2} sx={{ minHeight: 550 }}>
-        {/* Left Grid */}
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={12} sm={6}>
           <Paper
             style={{ padding: "16px", textAlign: "center", height: "100%" }}
           >
@@ -19,18 +17,11 @@ function UserAccountRegistration() {
             />
           </Paper>
         </Grid>
-        {/* Right Grid */}
-        <Grid item xs={12} sm={8}>
+        <Grid item xs={12} sm={6}>
           <Paper
-            style={{
-              padding: "16px",
-              textAlign: "center",
-              height: "100%",
-              overflow: "scroll",
-            }}
+            style={{ padding: "16px", textAlign: "center", height: "100%" }}
           >
-            {/* <Login /> */}
-            <CustomerRegistration />
+            <Login />
           </Paper>
         </Grid>
       </Grid>
@@ -38,4 +29,4 @@ function UserAccountRegistration() {
   );
 }
 
-export default UserAccountRegistration;
+export default AccountLoginPage;
