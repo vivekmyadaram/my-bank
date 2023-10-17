@@ -29,8 +29,8 @@ export default function MenuAppBar() {
   };
 
   const handleLogout = () => {
+    localStorage.clear();
     navigate("/login");
-    handleClose();
   };
 
   return (

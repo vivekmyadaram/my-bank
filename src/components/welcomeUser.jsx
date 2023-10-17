@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Paper, Avatar, Typography } from "@mui/material";
+import { UserContext } from "../app";
 
 const paperStyle = {
   padding: "20px",
@@ -16,11 +17,12 @@ const avatarStyle = {
 };
 
 function WelcomeComponent() {
-  const [user, setUser] = useState({ name: "Vivek", imageUrl: "" });
+  const user = useContext(UserContext);
+
   return (
     <Paper style={paperStyle} elevation={0}>
       <Typography variant="h5" component="div" gutterBottom>
-        Welcome, {user.name}!
+        Welcome, {user.username}!
       </Typography>
       <Typography variant="body1">
         Have nice day. We're glad to have you with us!

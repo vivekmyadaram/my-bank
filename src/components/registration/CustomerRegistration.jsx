@@ -18,6 +18,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import * as Yup from "yup";
+import http from "../../utils/http";
 
 const schema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -83,12 +84,12 @@ function CustomerRegistration() {
   ];
 
   const onSubmitForm = async (data) => {
-    const apiUrl = "http://localhost:8080/user-register";
+    console.log(data);
     try {
-      const res = await axios.post(apiUrl, data);
+      const res = await http.post("/user-register", data);
       toast.success("Account created successfully");
       localStorage.setItem("access_token", res.data.token);
-      window.location.href = "/register-succuss";
+      window.location.href = "/";
     } catch (error) {
       toast.error("Something went wrong");
     }

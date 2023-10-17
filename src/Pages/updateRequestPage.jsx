@@ -140,6 +140,7 @@ function RequestForAccountUpdate() {
               <TextField
                 fullWidth
                 size="small"
+                InputLabelProps={{ shrink: true }}
                 type={field.type || "text"}
                 label={field.name === "proof" ? "" : field.label}
                 {...register(field.name)}

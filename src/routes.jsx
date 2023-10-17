@@ -1,21 +1,20 @@
 import { createBrowserRouter } from "react-router-dom";
+import Loans from "./Pages/Loans";
+import UserProfile from "./Pages/UserProfile";
 import App from "./app";
-import ProtectedRoute from "./components/protectedRoutePage";
+import ProtectedRoute from "./components/ProtectedRoute";
 import WelcomeComponent from "./components/welcomeUser";
+import Registration from "./pages/Registration";
 import AdminProfileDisplay from "./pages/adminProfileview";
 import AdminRegistration from "./pages/adminRegistrationPage";
 import AmountDeposit from "./pages/amountDepositPage";
 import AmountWithdrawal from "./pages/amountWithdrawalPage";
 import BankCustomers from "./pages/bankUsesPage";
-import CustomerProfileDisplay from "./pages/customerProfileview";
 import CustomersRequestsPage from "./pages/customerRequestsPage";
 import CustomerLoanApplication from "./pages/loanApplicationPage";
 import Login from "./pages/login";
 import UpdateCustomerAccount from "./pages/updateCustomerPage";
 import RequestForAccountUpdate from "./pages/updateRequestPage";
-import RegistrationSuccess from "./components/loginSuccussPage";
-import ForgotPassword from "./components/forgetPasswordPage";
-import Registration from "./pages/Registration";
 
 const routes = createBrowserRouter([
   {
@@ -23,72 +22,68 @@ const routes = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: "/forgot-password",
-    element: <ForgotPassword />,
-  },
-  {
     path: "/new-user",
     element: <Registration />,
   },
   {
-    path: "/register-succuss",
-    element: <RegistrationSuccess />,
-  },
-  {
     path: "/",
-    element: <App />,
+    element: <ProtectedRoute element={App} />,
     children: [
       {
         path: "/",
-        element: <ProtectedRoute element={WelcomeComponent} />,
+        element: <WelcomeComponent />,
       },
       {
         path: "/user-profile",
-        element: <ProtectedRoute element={CustomerProfileDisplay} />,
+        element: <UserProfile />,
       },
-      {
-        path: "/user-profile/:accountNumber",
-        element: <ProtectedRoute element={CustomerProfileDisplay} />,
-      },
+      // {
+      //   path: "/user-profile/:accountNumber",
+      //   element: <CustomerProfileDisplay />,
+      // },
       {
         path: "/admin-profile",
-        element: <ProtectedRoute element={AdminProfileDisplay} />,
+        element: <AdminProfileDisplay />,
       },
       {
-        path: "/users",
-        element: <ProtectedRoute element={BankCustomers} />,
+        path: "/customers",
+        element: <BankCustomers />,
+      },
+      {
+        path: "/loans",
+        element: <Loans />,
       },
       {
         path: "/apply-loan",
-        element: <ProtectedRoute element={CustomerLoanApplication} />,
+        element: <CustomerLoanApplication />,
       },
       {
         path: "/edit-user/:accountNumber",
-        element: <ProtectedRoute element={UpdateCustomerAccount} />,
+        element: <UpdateCustomerAccount />,
       },
       {
         path: "/request-update",
-        element: <ProtectedRoute element={RequestForAccountUpdate} />,
+        element: <RequestForAccountUpdate />,
       },
       {
         path: "/deposit",
-        element: <ProtectedRoute element={AmountDeposit} />,
+        element: <AmountDeposit />,
       },
       {
         path: "/withdrawal",
-        element: <ProtectedRoute element={AmountWithdrawal} />,
+        element: <AmountWithdrawal />,
       },
       {
         path: "/admin-register",
-        element: <ProtectedRoute element={AdminRegistration} />,
+        element: <AdminRegistration />,
       },
       {
         path: "/customer-register",
-        element: <ProtectedRoute element={Registration} />,
+        element: <Registration />,
       },
       {
         path: "/customer-requests",
-        element: <ProtectedRoute element={CustomersRequestsPage} />,
+        element: <CustomersRequestsPage />,
       },
     ],
   },

@@ -14,10 +14,10 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
+import http from "../utils/http";
 
 const Login = () => {
   const [role, setRole] = useState("user");
-  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -26,22 +26,17 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     try {
-      const { username, password } = data;
-      const response = await axios.post(`http://localhost:8080/login`, {
-        username,
+      const { email, password } = data;
+      const response = await http.post(`/user-login`, {
+        email,
         password,
       });
-      console.log(response, "vivek");
-      if (response?.data?.personExists) {
-        const token = response.data.token;
-        localStorage.setItem("token", token); // Store the token in local storage
-        navigate("/");
-        toast.success("User login Succussfully!");
-      } else {
-        toast.error("Wrong Credentials!");
-      }
+      const token = response.data.token;
+      localStorage.setItem("access_token", token);
+      window.location.href = "/";
+      toast.success("Logged Succussfully!");
     } catch (error) {
-      console.log(error);
+      toast.error("enter correct username and password!");
     }
   };
 
@@ -74,13 +69,13 @@ const Login = () => {
                 />
               </RadioGroup>
               <TextField
-                label="Username"
+                label="email"
                 variant="outlined"
                 fullWidth
                 margin="normal"
-                {...register("username", { required: "Username is required" })}
-                error={!!errors.username}
-                helperText={errors.username?.message}
+                {...register("email", { required: "email is required" })}
+                error={!!errors.email}
+                helperText={errors.email?.message}
               />
               <TextField
                 label="Password"
@@ -102,16 +97,6 @@ const Login = () => {
               </Button>
             </form>
             <Stack direction="row" justifyContent="flex-end" spacing={2} m={2}>
-              <Link
-                to="/forgot-password"
-                style={{
-                  textDecoration: "none",
-                  color: "#007bff",
-                  cursor: "pointer",
-                }}
-              >
-                <Typography variant="inherit">Forgot password</Typography>
-              </Link>
               <Link
                 to={`/new-user`}
                 style={{

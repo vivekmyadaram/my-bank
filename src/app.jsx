@@ -1,56 +1,27 @@
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
-import MenuAppBar from "./components/appbar";
-import SideNav from "./components/sideNavbar";
-import { Outlet } from "react-router-dom";
-import { Stack } from "@mui/material";
+import { createContext, useEffect, useState } from "react";
 import "./app.css";
-import { useEffect } from "react";
+import Layout from "./components/layout/layout";
 import http from "./utils/http";
 
-const MainContent = () => {
+export const UserContext = createContext();
+
+function App() {
+  const [loggedUser, setLoggedUser] = useState();
+
   useEffect(() => {
     http
-      .get("/profile")
+      .get("/user-profile")
       .then((res) => {
-        console.log(res);
+        setLoggedUser(res?.data);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
-
   return (
-    <Grid container>
-      <Grid item xs={2}>
-        <Paper
-          elevation={1}
-          style={{
-            height: 530,
-          }}
-        >
-          <Typography variant="subtitle1">
-            <marquee direction="left">Recent updates from bank</marquee>
-          </Typography>
-          <SideNav />
-        </Paper>
-      </Grid>
-      <Grid item xs={10}>
-        <Paper elevation={0} style={{ height: 530, overflow: "auto" }}>
-          <Outlet />
-        </Paper>
-      </Grid>
-    </Grid>
-  );
-};
-
-function App() {
-  return (
-    <Stack direction="column" style={{ padding: "0px", margin: "0px" }}>
-      <MenuAppBar />
-      <MainContent />
-    </Stack>
+    <UserContext.Provider value={loggedUser}>
+      <Layout />
+    </UserContext.Provider>
   );
 }
 
