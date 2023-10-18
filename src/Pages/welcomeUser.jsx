@@ -22,7 +22,7 @@ function WelcomeComponent() {
   return (
     <Paper style={paperStyle} elevation={0}>
       <Typography variant="h5" component="div" gutterBottom>
-        Welcome, {user.username}!
+        Welcome, {user?.name}!
       </Typography>
       <Typography variant="body1">
         Have nice day. We're glad to have you with us!

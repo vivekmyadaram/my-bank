@@ -33,7 +33,8 @@ function Loans() {
   const [rowperpage, rowperpagechange] = useState(5);
 
   const handleViewUser = (user) => {
-    navigate(`/customer-profile/${user?.accountNumber}`);
+    console.log(user, "loan");
+    navigate(`/loan/${user?.accountNumber}`);
   };
 
   useEffect(() => {

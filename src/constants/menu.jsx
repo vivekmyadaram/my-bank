@@ -16,23 +16,24 @@ const userMenu = [
   },
   {
     id: 2,
-    title: "Deposit Amount",
+    title: "Deposit",
     path: "/deposit",
     icon: <CurrencyRupeeIcon />,
   },
   {
     id: 3,
-    title: "Withdrawal Amount",
+    title: "Withdraw",
     path: "/withdrawal",
     icon: <MoneyIcon />,
   },
   {
     id: 4,
-    title: "Request for Account Update",
+    title: "Update Profile",
     path: "/request-update",
     icon: <PersonAddIcon />,
   },
 ];
+
 const AdminMenu = [
   {
     id: 1,

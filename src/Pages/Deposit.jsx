@@ -1,21 +1,18 @@
-import React from "react";
-import { useForm } from "react-hook-form";
 import {
-  TextField,
-  Stack,
   Box,
   Button,
-  Paper,
-  MenuItem,
-  Typography,
   Grid,
+  MenuItem,
+  Paper,
+  Stack,
+  TextField,
 } from "@mui/material";
+import React from "react";
+import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import http from "../utils/http";
 
 function AmountDeposit() {
-  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -24,17 +21,12 @@ function AmountDeposit() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    const url = "http://localhost:8080/deposit";
-    console.log(data);
     try {
-      const response = await axios.post(url, data);
+      const response = await http.post("/deposit", data);
       console.log("Data sent successfully:", response.data);
       toast.success(
         `Amount deposited to your account Rs:${response?.data?.depositAmount}`
       );
-      if (!response.ok) {
-        throw new Error("Post request failed");
-      }
     } catch (error) {
       console.error("Error sending data:", error);
     }

@@ -10,7 +10,7 @@ import {
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import * as React from "react";
-import { AdminMenu, userMenu } from "./menu";
+import { AdminMenu, userMenu } from "../../constants/menu";
 import { UserContext } from "../../app";
 import { Link } from "react-router-dom";
 

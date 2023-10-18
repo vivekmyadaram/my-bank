@@ -1,29 +1,29 @@
 import { createBrowserRouter } from "react-router-dom";
-import Loans from "./Pages/Loans";
 import UserProfile from "./Pages/UserProfile";
 import App from "./app";
 import ProtectedRoute from "./components/ProtectedRoute";
-import WelcomeComponent from "./components/welcomeUser";
 import Registration from "./pages/Registration";
-import AdminProfileDisplay from "./pages/adminProfileview";
-import AdminRegistration from "./pages/adminRegistrationPage";
-import AmountDeposit from "./pages/amountDepositPage";
-import AmountWithdrawal from "./pages/amountWithdrawalPage";
-import BankCustomers from "./pages/bankUsesPage";
-import CustomersRequestsPage from "./pages/customerRequestsPage";
-import CustomerLoanApplication from "./pages/loanApplicationPage";
+// import AdminProfileDisplay from "./pages/adminProfileview";
+import AmountDeposit from "./Pages/Deposit";
 import Login from "./pages/login";
-import UpdateCustomerAccount from "./pages/updateCustomerPage";
-import RequestForAccountUpdate from "./pages/updateRequestPage";
+import RequestForAccountUpdate from "./Pages/UpdateProfile";
+import AmountWithdrawal from "./Pages/Withdraw";
+import WelcomeComponent from "./Pages/welcomeUser";
+import CustomerLoanApplication from "./Pages/ApplyLoan";
+import BankCustomers from "./Pages/Customers";
+import UpdateCustomerAccount from "./Pages/updateCustomerPage";
+import CustomerProfileView from "./Pages/CustomerProfileView";
+import Loans from "./Pages/Loans";
+import LoanInfo from "./Pages/loanInfo";
 
 const routes = createBrowserRouter([
   {
-    path: "login",
-    element: <Login />,
+    path: "/register",
+    element: <Registration />,
   },
   {
-    path: "/new-user",
-    element: <Registration />,
+    path: "login",
+    element: <Login />,
   },
   {
     path: "/",
@@ -34,36 +34,12 @@ const routes = createBrowserRouter([
         element: <WelcomeComponent />,
       },
       {
-        path: "/user-profile",
+        path: "/profile",
         element: <UserProfile />,
-      },
-      // {
-      //   path: "/user-profile/:accountNumber",
-      //   element: <CustomerProfileDisplay />,
-      // },
-      {
-        path: "/admin-profile",
-        element: <AdminProfileDisplay />,
-      },
-      {
-        path: "/customers",
-        element: <BankCustomers />,
-      },
-      {
-        path: "/loans",
-        element: <Loans />,
       },
       {
         path: "/apply-loan",
         element: <CustomerLoanApplication />,
-      },
-      {
-        path: "/edit-user/:accountNumber",
-        element: <UpdateCustomerAccount />,
-      },
-      {
-        path: "/request-update",
-        element: <RequestForAccountUpdate />,
       },
       {
         path: "/deposit",
@@ -74,17 +50,43 @@ const routes = createBrowserRouter([
         element: <AmountWithdrawal />,
       },
       {
-        path: "/admin-register",
-        element: <AdminRegistration />,
+        path: "/request-update",
+        element: <RequestForAccountUpdate />,
       },
       {
-        path: "/customer-register",
-        element: <Registration />,
+        path: "/customers",
+        element: <BankCustomers />,
       },
       {
-        path: "/customer-requests",
-        element: <CustomersRequestsPage />,
+        path: "/user/:accountNumber",
+        element: <CustomerProfileView />,
       },
+      {
+        path: "/edit-user/:accountNumber",
+        element: <UpdateCustomerAccount />,
+      },
+      {
+        path: "/loans",
+        element: <Loans />,
+      },
+      {
+        path: "/loan/:accountNumber",
+        element: <LoanInfo />,
+      },
+      //
+
+      // {
+      //   path: "/admin-register",
+      //   element: <AdminRegistration />,
+      // },
+      // {
+      //   path: "/customer-register",
+      //   element: <Registration />,
+      // },
+      // {
+      //   path: "/customer-requests",
+      //   element: <CustomersRequestsPage />,
+      // },
     ],
   },
 ]);

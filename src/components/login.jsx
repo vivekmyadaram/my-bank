@@ -98,7 +98,7 @@ const Login = () => {
             </form>
             <Stack direction="row" justifyContent="flex-end" spacing={2} m={2}>
               <Link
-                to={`/new-user`}
+                to={`/register`}
                 style={{
                   textDecoration: "none",
                   color: "#007bff",

@@ -18,7 +18,7 @@ const formFields = [
   { label: "Doc Proof Number", name: "proofDocNo" },
 ];
 
-const UserProfile = () => {
+const CustomerProfileView = () => {
   const user = useContext(UserContext);
 
   return (
@@ -28,12 +28,15 @@ const UserProfile = () => {
         margin: "auto",
       }}
     >
-      <Avatar alt="" src="" style={{ height: 100, width: 100 }} />
       <Grid container spacing={2} sx={{ mt: 2 }}>
         {formFields.map((field) => (
           <>
             <Grid item xs={4}>
-              <Typography variant="subtitle1" color="textSecondary">
+              <Typography
+                sx={{ color: "blue" }}
+                variant="subtitle1"
+                color="textSecondary"
+              >
                 {field.label}
               </Typography>
             </Grid>
@@ -41,9 +44,7 @@ const UserProfile = () => {
               :
             </Grid>
             <Grid item xs={7}>
-              <Typography variant="body1">
-                {user && user[field?.name]}
-              </Typography>
+              <Typography variant="h6">{user && user[field?.name]}</Typography>
             </Grid>
           </>
         ))}
@@ -52,4 +53,4 @@ const UserProfile = () => {
   );
 };
 
-export default UserProfile;
+export default CustomerProfileView;

@@ -1,55 +1,43 @@
-import React from "react";
-import { useForm } from "react-hook-form";
 import {
-  TextField,
-  Stack,
   Box,
   Button,
-  Paper,
-  MenuItem,
   Grid,
+  MenuItem,
+  Paper,
+  Stack,
+  TextField,
 } from "@mui/material";
+import React from "react";
+import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import http from "../utils/http";
 
 function AmountWithdrawal() {
-  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data) => {
-    const accountNumber = "12345678901";
-    console.log(data);
-    // navigate(`withdrawal/${accountNumber}`);
-
-    // try {
-    //   const response = await fetch("http://localhost:8080/withdrawal", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(data),
-    //   });
-    //   if (response.ok) {
-    //     toast.success(
-    //       `RS ${data?.withdrawalAmount} Withdrawn from Your Account Successfully`
-    //     );
-    //   } else {
-    //     throw new Error("Post request failed");
-    //   }
-    // } catch (error) {
-    //   toast.error(JSON.stringify(error.message));
-    // }
+  const onSubmitForm = async (data) => {
+    try {
+      const response = await http.post("/withdrawal", data);
+      console.log("Data sent successfully:", response.data);
+      toast.success(
+        `Amount deposited to your account Rs:${response?.data?.depositAmount}`
+      );
+    } catch (error) {
+      console.error("Error sending data:", error);
+    }
+    reset();
   };
 
   return (
     <Paper
       sx={{ p: 2, m: 3 }}
       component="form"
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(onSubmitForm)}
     >
       <Stack direction="column" spacing={2} margin={2}>
         <Grid container spacing={2}>
@@ -104,7 +92,7 @@ function AmountWithdrawal() {
               type="tel"
               fullWidth
               label="withdrawal Mobile"
-              {...register("withdrawalMobile", {
+              {...register("mobileNumber", {
                 required: "Mobile Number is required",
                 pattern: {
                   value: /^[0-9]{10}$/, // Regex pattern for a 10-digit mobile number

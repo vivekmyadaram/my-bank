@@ -38,7 +38,7 @@ function BankCustomers() {
   const [rowperpage, rowperpagechange] = useState(5);
 
   const handleViewUser = (user) => {
-    navigate(`/customer-profile/${user?.accountNumber}`);
+    navigate(`/user/${user?.accountNumber}`);
   };
 
   const deleteCustomerFromDb = async (cust) => {

@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Checkbox,
   Grid,
   Paper,
   Stack,
@@ -9,15 +10,13 @@ import {
   Stepper,
   TextField,
   Typography,
-  Checkbox,
 } from "@mui/material";
-import axios from "axios";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import http from "../utils/http";
 
 const steps = ["Personal Info", "Loan Info", "Review"];
 
@@ -99,7 +98,7 @@ export default function CustomerLoanApplication() {
     watch,
     reset,
   } = useForm({
-    resolver: yupResolver(personalFieldsSchema),
+    // resolver: yupResolver(personalFieldsSchema),
   });
 
   const handleNext = () => {
@@ -112,14 +111,10 @@ export default function CustomerLoanApplication() {
 
   const handleSubmitForm = async (data) => {
     if (agree) {
-      const apiUrl = "http://localhost:8080/apply-loan";
       try {
-        const response = await axios.post(apiUrl, data);
+        const response = await http.post("/apply-loan", data);
         console.log("Data sent successfully:", response?.data);
         toast.success(response?.data?.message);
-        if (!response.ok) {
-          throw new Error("Post request failed");
-        }
       } catch (error) {
         console.error("Error sending data:", error);
       }

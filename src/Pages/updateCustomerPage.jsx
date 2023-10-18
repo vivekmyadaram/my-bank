@@ -148,6 +148,7 @@ function UpdateCustomerAccount() {
                 size="small"
                 type={field.type || "text"}
                 label={field.name === "proof" ? "" : field.label}
+                InputLabelProps={{ shrink: true }}
                 {...register(field.name)}
                 error={!!errors[field.name]}
                 helperText={errors[field.name]?.message}

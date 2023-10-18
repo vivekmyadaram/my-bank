@@ -24,7 +24,7 @@ export default function MenuAppBar() {
   };
 
   const handleProfile = () => {
-    navigate("/user-profile");
+    navigate("/profile");
     handleClose();
   };
 

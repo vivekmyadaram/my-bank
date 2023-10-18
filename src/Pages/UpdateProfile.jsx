@@ -18,23 +18,18 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import * as Yup from "yup";
+import http from "../utils/http";
 
 const schema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
   username: Yup.string().required("Username is required"),
-  password: Yup.string().required("Password is required"),
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password"), null], "Passwords must match")
-    .required("Confirm Password is required"),
+  // password: Yup.string().required("Password is required"),
   email: Yup.string().required("EmailID is required"),
-  phone: Yup.string().required("Phone number is required"),
-  address: Yup.string().required("Address required"),
-  state: Yup.string().required("State required"),
-  country: Yup.string().required("Country is required"),
-  proofDocNo: Yup.string().required("ProofDoc Num is required"),
+  // phone: Yup.string().required("Name is required"),
+  // address: Yup.string().required("Address required"),
 });
 
-function AdminRegistration() {
+function RequestForAccountUpdate() {
   const {
     register,
     handleSubmit,
@@ -59,16 +54,7 @@ function AdminRegistration() {
   const formFields = [
     { label: "Name", name: "name" },
     { label: "Username", name: "username" },
-    {
-      label: "Password",
-      name: "password",
-      type: visibility.password ? "text" : "password",
-    },
-    {
-      label: "Confirm Password",
-      name: "confirmPassword",
-      type: visibility.confirmPassword ? "text" : "password",
-    },
+
     { label: "Email", name: "email", type: "email" },
     { label: "dob", name: "dob", type: "date" },
     { label: "Mobile", name: "phone" },
@@ -83,24 +69,13 @@ function AdminRegistration() {
 
   const onSubmitForm = async (data) => {
     console.log(data);
-    // try {
-    //   const postResponse = await fetch("http://localhost:8080/customers", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(data),
-    //   });
-    //   toast.success("user created succussfully");
-
-    //   if (!postResponse.ok) {
-    //     throw new Error("Post request failed");
-    //   }
-    //   toast.success(JSON.stringify(resp));
-    // } catch (error) {
-    //   toast.error(JSON.stringify(error));
-    // }
-    // reset();
+    try {
+      await http.post("/user-requests", data);
+      toast.success("Your Request Accepted!");
+    } catch (error) {
+      toast.error(JSON.stringify(error?.message));
+    }
+    reset();
   };
 
   return (
@@ -120,7 +95,7 @@ function AdminRegistration() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Create Account
+            Request for Update
           </Typography>
         </Stack>
         <Grid container spacing={2}>
@@ -140,6 +115,7 @@ function AdminRegistration() {
               <TextField
                 fullWidth
                 size="small"
+                InputLabelProps={{ shrink: true }}
                 type={field.type || "text"}
                 label={field.name === "proof" ? "" : field.label}
                 {...register(field.name)}
@@ -170,7 +146,7 @@ function AdminRegistration() {
         </Grid>
         <Box sx={{ textAlign: "right" }}>
           <Button type="submit" variant="contained">
-            Create
+            send request
           </Button>
         </Box>
       </Stack>
@@ -178,4 +154,4 @@ function AdminRegistration() {
   );
 }
 
-export default AdminRegistration;
+export default RequestForAccountUpdate;
