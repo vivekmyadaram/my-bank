@@ -61,8 +61,6 @@ function RequestForAccountUpdate() {
     { label: "Address", name: "address" },
     { label: "State", name: "state" },
     { label: "Country", name: "country" },
-    { label: "Account Type", name: "accType" },
-    { label: "InitialDeposit", name: "initialDeposit" },
     { label: "Doc Proof", name: "proof" },
     { label: "Doc Proof Number", name: "proofDocNo" },
   ];
@@ -100,18 +98,7 @@ function RequestForAccountUpdate() {
         </Stack>
         <Grid container spacing={2}>
           {formFields.map((field, index) => (
-            <Grid
-              item
-              xs={12}
-              sm={
-                field?.name === "proofDocNo"
-                  ? 6
-                  : field?.name === "proof"
-                  ? 6
-                  : 3
-              }
-              key={index}
-            >
+            <Grid item xs={12} sm={6} key={index}>
               <TextField
                 fullWidth
                 size="small"

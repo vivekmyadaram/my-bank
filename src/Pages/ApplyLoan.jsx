@@ -76,7 +76,7 @@ const loanFields = [
   { name: "loanType", label: "Loan Type", type: "select" },
   { name: "loanAmount", label: "Loan Amount", type: "number" },
   { name: "loanApplyDate", label: "Apply Date", type: "date" },
-  { name: "rateOfInterest", label: "Rate", type: "number" },
+  // { name: "rateOfInterest", label: "Rate", type: "number" },
   { name: "loanDuration", label: "Duration" },
   { name: "annualIncome", label: "Annual Income", type: "number" },
   { name: "course", label: "Course Name" },
@@ -113,8 +113,8 @@ export default function CustomerLoanApplication() {
     if (agree) {
       try {
         const response = await http.post("/apply-loan", data);
-        console.log("Data sent successfully:", response?.data);
         toast.success(response?.data?.message);
+        navigate("/");
       } catch (error) {
         console.error("Error sending data:", error);
       }
@@ -124,9 +124,9 @@ export default function CustomerLoanApplication() {
 
   return (
     <form onSubmit={handleSubmit(handleSubmitForm)}>
-      <Box sx={{ p: 8 }}>
-        <Typography variant="h4" align="center">
-          Apply Loan
+      <Box>
+        <Typography variant="h6" align="center">
+          Loan Application
         </Typography>
         <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
           {steps.map((label) => (
@@ -146,7 +146,7 @@ export default function CustomerLoanApplication() {
             </Typography>
           </Paper>
         ) : (
-          <Box sx={{ p: 3 }}>
+          <Box>
             {activeStep === 0 && (
               <PersonalInfomation register={register} errors={errors} />
             )}
@@ -182,10 +182,7 @@ export default function CustomerLoanApplication() {
 
 function PersonalInfomation({ register, errors }) {
   return (
-    <Paper elevation={9} sx={{ p: 2 }}>
-      <Typography variant="h6" gutterBottom>
-        Customer Info
-      </Typography>
+    <Paper elevation={1} sx={{ p: 3 }}>
       <Grid container spacing={1}>
         {personalFields.map((field) => (
           <Grid item xs={12} sm={4}>
@@ -208,10 +205,7 @@ function PersonalInfomation({ register, errors }) {
 
 function LoanInfo({ register, errors }) {
   return (
-    <Paper elevation={9} sx={{ p: 2 }}>
-      <Typography variant="h6" gutterBottom>
-        Required info for loan process
-      </Typography>
+    <Paper elevation={1} sx={{ p: 3 }}>
       <Grid container spacing={1}>
         {loanFields.map((field) => (
           <Grid item xs={12} sm={3}>
@@ -235,61 +229,65 @@ function LoanInfo({ register, errors }) {
 
 function Review({ watch, agree, setAgree }) {
   return (
-    <Paper elevation={9} sx={{ p: 2 }}>
-      <Typography variant="h6" gutterBottom>
+    <>
+      <Typography variant="h6" textAlign="center" gutterBottom>
         Review Your Application
       </Typography>
-      <Grid container spacing={1}>
-        <Grid item xs={12} sm={6}>
-          <Paper elevation={1} sx={{ p: 3, minHeight: 280 }}>
-            {personalFields.map((field) => (
-              <Stack
-                key={field.name}
-                direction="row"
-                justifyContent="space-evenly"
-                alignItems="center"
-              >
-                <Typography variant="inherit" gutterBottom>
-                  {field.label}:
+      <Paper
+        elevation={1}
+        sx={{ overflow: "auto", height: "300px", mt: 2, p: 3 }}
+      >
+        <Grid container spacing={1}>
+          {personalFields.map((field) => (
+            <>
+              <Grid item xs={5}>
+                <Typography variant="body1" sx={{ color: "blue" }}>
+                  {field?.label}
                 </Typography>
-                <Typography variant="subtitle1">
-                  {watch(field?.name)}
-                </Typography>
-              </Stack>
-            ))}
-          </Paper>
+              </Grid>
+              <Grid item xs={2}>
+                <Typography sx={{ color: "000000" }}>:</Typography>
+              </Grid>
+              <Grid item xs={5}>
+                <Typography variant="h6">{watch(field?.name)}</Typography>
+              </Grid>
+            </>
+          ))}
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <Paper elevation={1} sx={{ p: 3, minHeight: 280 }}>
-            {loanFields.map((field) => (
-              <Stack
-                key={field.name}
-                direction="row"
-                justifyContent="space-evenly"
-                alignItems="center"
-              >
-                <Typography variant="inherit" gutterBottom>
-                  {field.label}:
+        <Grid container spacing={1}>
+          {loanFields.map((field) => (
+            <>
+              <Grid item xs={5}>
+                <Typography variant="body1" sx={{ color: "blue" }}>
+                  {field?.label}
                 </Typography>
-                <Typography variant="subtitle1">
-                  {watch(field?.name)}
-                </Typography>
-              </Stack>
-            ))}
-          </Paper>
+              </Grid>
+              <Grid item xs={2}>
+                :
+              </Grid>
+              <Grid item xs={5}>
+                <Typography variant="h6">{watch(field?.name)}</Typography>
+              </Grid>
+            </>
+          ))}
         </Grid>
-        <Stack direction="row" alignItems="center">
-          <Checkbox
-            checked={agree}
-            onChange={() => setAgree(!agree)}
-            inputProps={{ "aria-label": "controlled" }}
-            htmlFor="checked"
-          />
-          <Typography component="label" id="checked" name="checked">
-            Provided info correct & agreed terms and conditions
-          </Typography>
-        </Stack>
-      </Grid>
-    </Paper>
+      </Paper>
+      <Stack direction="row" alignItems="center">
+        <Checkbox
+          checked={agree}
+          onChange={() => setAgree(!agree)}
+          inputProps={{ "aria-label": "controlled" }}
+          htmlFor="checked"
+        />
+        <Typography
+          variant="caption"
+          component="label"
+          id="checked"
+          name="checked"
+        >
+          Provided info correct & agreed terms and conditions
+        </Typography>
+      </Stack>
+    </>
   );
 }

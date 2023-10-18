@@ -73,20 +73,6 @@ const routes = createBrowserRouter([
         path: "/loan/:accountNumber",
         element: <LoanInfo />,
       },
-      //
-
-      // {
-      //   path: "/admin-register",
-      //   element: <AdminRegistration />,
-      // },
-      // {
-      //   path: "/customer-register",
-      //   element: <Registration />,
-      // },
-      // {
-      //   path: "/customer-requests",
-      //   element: <CustomersRequestsPage />,
-      // },
     ],
   },
 ]);

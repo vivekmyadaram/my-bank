@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const columns = [
-  { id: "name", name: "Name" },
+  { id: "firstName", name: "Name" },
   { id: "accountNumber", name: "Account Number" },
   { id: "loanAmount", name: "Loan Amount" },
   { id: "loanDuration", name: "Loan Duration" },
